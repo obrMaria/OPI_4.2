@@ -19,10 +19,11 @@ size(), возвращающий установленную длину. Если
 
 
 class BitString:
+    MAX_SIZE = 8  # Максимальный размер списка
 
-    def __init__(self, x):
+    def __init__(self, size):
         # Инициализация
-        self.size = x
+        self.size = size
         self.x = [0] * self.size
 
     def set(self, x):
@@ -51,13 +52,13 @@ class BitString:
 
     def __lshift__(self, x):
         # Оператор сдвиг влево (<<)
-        del (self.x[0:x])
+        del self.x[0:x]
         self.x += [0] * x
         return self
 
     def __rshift__(self, x):
         # Оператор сдвиг вправо (>>)
-        del (self.x[len(self.x) - x:])
+        del self.x[len(self.x) - x:]
         self.x = [0] * x + self.x
         return self
 
@@ -65,10 +66,18 @@ class BitString:
         # Вывод результата в консоль
         return ''.join(map(str, self.x))
 
+    def __getitem__(self, index):
+        # Операция индексирования
+        return self.x[index]
+
+    def size(self):
+        # Возвращает установленную длину списка
+        return self.size
+
 
 if __name__ == "__main__":
-    x = BitString(8)  # Размер списка 1 - 8 бит
-    y = BitString(8)  # Размер списка 2 - 8 бит
+    x = BitString(BitString.MAX_SIZE)  # Размер списка 1 - 8 бит
+    y = BitString(BitString.MAX_SIZE)  # Размер списка 2 - 8 бит
 
     x.set(60)  # Первая цифра 00111100
     print(x)
@@ -81,3 +90,7 @@ if __name__ == "__main__":
     print(f'{x} not = {~x}')
     print(f'{y} >> 1 = {y >> 1}')
     print(f'{x} << 2 = {x << 2}')
+
+    print(f'x[2] = {x[2]}')
+    print(f'y[3] = {y[3]}')
+
